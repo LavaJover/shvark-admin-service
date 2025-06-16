@@ -17,6 +17,16 @@ func NewAuthHandler(ssoClient *grpcclients.SSOClient) *AuthHandler {
 	return &AuthHandler{SSOClient: ssoClient}
 }
 
+// @Summary Login user
+// @Description Authenticate user and receive JWT
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param input body dto.LoginRequest true "user creds"
+// @Success 200 {object} dto.LoginResponse
+// @Failure 400 {object} dto.ErrorResponse
+// @Failure 401 {object} dto.ErrorResponse
+// @Router /auth/login [post]
 func (h *AuthHandler) Login(c *gin.Context) {
 	var httpRequest dto.LoginRequest
 	if err := c.ShouldBindJSON(&httpRequest); err != nil {
