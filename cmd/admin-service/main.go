@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/LavaJover/shvark-admin-service/internal/config"
@@ -13,6 +14,7 @@ import (
 func main() {
 	// init config
 	cfg := config.MustLoad()
+	fmt.Println(cfg)
 
 	// init authz-client
 	authzAddr := "localhost:50054"
