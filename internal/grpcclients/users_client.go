@@ -9,12 +9,12 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-type UserHandler struct {
+type UserClient struct {
 	conn *grpc.ClientConn
 	service userpb.UserServiceClient
 }
 
-func NewUserHandler(addr string) (*UserHandler, error) {
+func NewUserClient(addr string) (*UserClient, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 	
@@ -29,15 +29,22 @@ func NewUserHandler(addr string) (*UserHandler, error) {
 		return nil, err
 	}
 
-	return &UserHandler{
+	return &UserClient{
 		conn: conn,
 		service: userpb.NewUserServiceClient(conn),
 	}, nil
 }
 
-func (c *UserHandler) CreateUser(request *userpb.CreateUserRequest) (*userpb.CreateUserResponse, error) {
+func (c *UserClient) CreateUser(request *userpb.CreateUserRequest) (*userpb.CreateUserResponse, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	return c.service.CreateUser(ctx, request)
+}
+
+func (c *UserClient) GetUsers(request *userpb.GetUsersRequest) (*userpb.GetUsersResponse, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	return c.service.GetUsers(ctx, request)
 }

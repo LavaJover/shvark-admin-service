@@ -8,6 +8,8 @@ github.com/LavaJover/shvark-sso-service v0.0.1 h1:R9IsrX3weRtB7/4Iib5g+WqYXrSIGF
 github.com/LavaJover/shvark-sso-service v0.0.1/go.mod h1:2wQmGAOAZcVAeXfms1Tm/DWR8vDZ7Ds7ydxVSIcb8kQ=
 github.com/LavaJover/shvark-user-service v0.0.2 h1:BL51l1XJXUGfELfgEhwtTPOL/bl4hqzJdVxH3qcwkRg=
 github.com/LavaJover/shvark-user-service v0.0.2/go.mod h1:Dkv1niga/z8A4FB/IqdBzP45d224PH3dKUTWY08i8LI=
+github.com/LavaJover/shvark-user-service v0.0.3 h1:Zt0A4ByLvknYjDEvwZwQNP+e7U27NpagcTh28y073+I=
+github.com/LavaJover/shvark-user-service v0.0.3/go.mod h1:Dkv1niga/z8A4FB/IqdBzP45d224PH3dKUTWY08i8LI=
 github.com/PuerkitoBio/purell v1.2.1 h1:QsZ4TjvwiMpat6gBCBxEQI0rcS9ehtkKtSpiUnd9N28=
 github.com/PuerkitoBio/purell v1.2.1/go.mod h1:ZwHcC/82TOaovDi//J/804umJFFmbOHPngi8iYYv/Eo=
 github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 h1:d+Bc7a5rLufV/sSk/8dngufqelfh6jnri85riMAaF/M=

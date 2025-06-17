@@ -6,6 +6,16 @@ type RegisterTraderRequest struct {
 	Password string `json:"password"`
 }
 
-type RegisterTraderResponse struct {
-	
+type RegisterTraderResponse struct {}
+
+type Trader struct {
+	ID 			string 	`json:"id"`
+	Username 	string 	`json:"username"`
+	Login 		string 	`json:"login"`
+	Password	string 	`json:"password"`
+}
+
+type GetTradersResponse struct {
+	TotalPages 	int64 		`json:"total_pages"`
+	Traders 	[]*Trader 	`json:"traders"`
 }

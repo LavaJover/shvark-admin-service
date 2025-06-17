@@ -19,12 +19,55 @@ definitions:
       refresh_token:
         type: string
     type: object
+  dto.RegisterTraderRequest:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.RegisterTraderResponse:
+    type: object
 info:
   contact: {}
   description: API for internal admin panel
   title: Admin Service API
   version: "1.0"
 paths:
+  /admin/traders/register:
+    post:
+      consumes:
+      - application/json
+      description: Register new trader team by credentials
+      parameters:
+      - description: trader credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterTraderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dto.RegisterTraderResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "502":
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Register new trader team
+      tags:
+      - traders
   /auth/login:
     post:
       consumes:

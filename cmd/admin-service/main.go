@@ -50,11 +50,18 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to init wallet client")
 	}
+	// init user client
+	slog.Info("connecting to user client...")
+	userAddr := "localhost:50052"
+	userClient, err := grpcclients.NewUserClient(userAddr)
+	if err != nil {
+		log.Fatalf("failed to init user client")
+	}
 
 	//////// Handlers ////////
 	authHandler := handlers.NewAuthHandler(ssoClient, authzClient)
 
-	traderUsecase := usecase.NewTraderUsecase(ssoClient, walletClient)
+	traderUsecase := usecase.NewTraderUsecase(ssoClient, walletClient, userClient)
 	traderhandler := handlers.NewTraderHandler(traderUsecase)
 
 	/////// Routing //////////
@@ -72,6 +79,7 @@ func main() {
 	traderGroup.Use(middleware.AuthMiddleware("my-secret-word"), middleware.RequirePermission(authzClient, "*", "*"))
 	{
 		traderGroup.POST("/register", traderhandler.RegisterTrader)
+		traderGroup.GET("", traderhandler.GetTraders)
 	}
 
 	r.Run(":9090")
