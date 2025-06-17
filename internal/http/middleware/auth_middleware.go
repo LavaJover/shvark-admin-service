@@ -8,7 +8,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func AuthMiddleware(secret string) gin.HandlerFunc{
+func AuthMiddleware(secret string, ) gin.HandlerFunc{
 	return func(c *gin.Context) {
 		auth := c.GetHeader("Authorization")
 		if !strings.HasPrefix(auth, "Bearer "){
@@ -37,6 +37,8 @@ func AuthMiddleware(secret string) gin.HandlerFunc{
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "missing user_id"})
 			return
 		}
+
+
 
 		c.Set("user_id", userID)
 		c.Next()

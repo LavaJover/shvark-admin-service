@@ -5,16 +5,18 @@ import (
 
 	"github.com/LavaJover/shvark-admin-service/internal/grpcclients"
 	"github.com/LavaJover/shvark-admin-service/internal/http/dto"
+	authzpb "github.com/LavaJover/shvark-authz-service/proto/gen"
 	ssopb "github.com/LavaJover/shvark-sso-service/proto/gen"
 	"github.com/gin-gonic/gin"
 )
 
 type AuthHandler struct {
 	SSOClient *grpcclients.SSOClient
+	AuthzClient *grpcclients.AuthzClient
 }
 
-func NewAuthHandler(ssoClient *grpcclients.SSOClient) *AuthHandler {
-	return &AuthHandler{SSOClient: ssoClient}
+func NewAuthHandler(ssoClient *grpcclients.SSOClient, authzClient *grpcclients.AuthzClient) *AuthHandler {
+	return &AuthHandler{SSOClient: ssoClient, AuthzClient: authzClient}
 }
 
 // @Summary Login user
@@ -42,6 +44,26 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "login failed"})
 		return
 	}
+
+	validationResponse, err := h.SSOClient.ValidateToken(&ssopb.ValidateTokenRequest{
+		AccessToken: response.AccessToken,
+	})
+	if err != nil || !validationResponse.Valid{
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "invalid access token"})
+		return
+	}
+	userID := validationResponse.UserId
+
+	authzResponse, err := h.AuthzClient.CheckPermission(&authzpb.CheckPermissionRequest{
+		UserId: userID,
+		Object: "*",
+		Action: "*",
+	})
+	if err != nil || !authzResponse.Allowed {
+		c.JSON(http.StatusForbidden, gin.H{"error": "not enough rights"})
+		return
+	}
+
 	c.JSON(http.StatusOK, dto.LoginResponse{
 		AccessToken: response.AccessToken,
 		RefreshToken: response.RefreshToken,
